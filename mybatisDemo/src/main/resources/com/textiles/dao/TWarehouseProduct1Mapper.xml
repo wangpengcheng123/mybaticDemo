@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.textiles.dao.TWarehouseProduct1Mapper" ><!--可以随意命名  -->
+  <select id="selectInfo" parameterType="String"  resultType="Map"><!--resultType返回的是集合中的元素类型，而不是集合本身  -->
+    select * from t_warehouse_product_1 where wh_num = #{whNum}
+  </select>
+  
+   <select id="selectInfo2"  parameterType="Integer"  resultType="Map" >
+    select * from t_warehouse_product_1 where id = #{0}
+  </select>
+  
+   <select id="selectInfo3"  parameterType="Integer"  resultType="TWarehouseProduct1" >
+    select * from t_warehouse_product_1 where id = #{0}
+  </select>
+  
+  
+  
+   <select id="selectInfo4"  parameterType="Map"  resultType="Map" >
+    select a.*,b.wh_name from t_warehouse_product_1  a
+    inner join t_warehouse b on a.wh_id=b.id 
+    where  
+     <trim prefixOverrides="OR|AND|and|or">
+    <if test="id!=null and id!=0 and id!=''">
+      and a.id = #{id}
+    </if>
+    <if test="whId!=null and whId!=0 and whId!=''">
+      and a.wh_id = #{whId}
+    </if>
+     <if test="whNum!=null and whNum!=''">
+      and a.wh_num=#{whNum}
+    </if>
+  </trim> 
+    order by a.id DESC limit 50
+    
+  </select>
+  
+ 
+  <select id="selectInfo5"  parameterType="Map"  resultType="Map" >
+    select a.*,b.wh_name from t_warehouse_product_1  a
+    inner join t_warehouse b on a.wh_id=b.id 
+    where  
+     <trim prefixOverrides="OR|AND|and|or">
+    <if test="id!=null and id!=0 and id!=''">
+      and a.id = #{id}
+    </if>
+    <if test="whId!=null and whId!=0 and whId!=''">
+      and a.wh_id = #{whId}
+    </if>
+    
+     <if test="whNums!=null ">
+     and  a.wh_num in
+         <foreach collection="whNums" item="item" index="index" open="(" separator="," close=")">
+             #{item}
+         </foreach>
+    </if>
+ 
+  </trim> 
+    order by a.id DESC limit 50
+  </select>
+  
+  <insert id="insertInfo" parameterType="com.textiles.po.TWarehouse"  useGeneratedKeys="true" keyProperty="id"><!--useGeneratedKeys取出数据库中默认产生的id  指定bean中的id字段接收 自增主键 -->
+     insert into t_warehouse(wh_name,company_id,wh_tel,wh_address,wh_contacts,operator_id,operator_name,ctime,parent_id,parent_ids,wh_level)
+     values(#{whName},#{companyId},#{whTel},#{whAddress},#{whContacts},#{operatorId},#{operatorName},#{ctime},#{parentId},#{parentIds},#{whLevel})
+  </insert>
+  
+  <insert id="updateInfo" parameterType="map"  ><!--useGeneratedKeys取出数据库中默认产生的id  指定bean中的id字段接收 自增主键 -->
+     update t_warehouse 
+     <set>
+       wh_name=#{whName},
+       <if test="parentIds!=null and parentIds!=''">parent_ids=#{parentIds},</if>
+     </set>
+     where id=#{id} 
+  </insert>
+  
+  
+  <insert id="deleteInfo" parameterType="map"  ><!--useGeneratedKeys取出数据库中默认产生的id  指定bean中的id字段接收 自增主键 -->
+     delete from t_warehouse
+     where id=#{id} 
+  </insert>
+  
+  
+</mapper>

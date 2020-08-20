@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+     <properties resource="jdbc.properties" ></properties><!--直接引入  -->
+     <settings>
+        <setting name="defaultFetchSize" value="50"/> <!--为驱动的结果集获取数量（fetchSize）设置一个建议值。此参数只可以在查询设置中被覆盖。  -->
+	    <setting name ="mapUnderscoreToCamelCase" value = "true"/> 
+     </settings>
+     
+     <typeAliases>
+      <typeAlias alias="TWarehouseProduct1"  type="com.textiles.po.TWarehouseProduct1"/><!--给类起别名  -->
+       <!-- <package name="com.textiles.po"/> --><!--可以直接指定包名，mybatis会自动在包下面搜对应的实体  -->
+    </typeAliases>
+     <environments default="development">
+         <environment id="development">
+             <transactionManager type="JDBC" />
+             <!-- 配置数据库连接信息 -->
+             <dataSource type="POOLED">
+                 <property name="driver" value="${jdbc.driverClassName}" />
+                 <property name="url" value="${jdbc.url}" />
+                 <property name="username" value="${jdbc.username}" />
+                 <property name="password" value="${jdbc.password}" />
+             </dataSource>
+         </environment>
+     </environments>     
+  <mappers>
+     <mapper resource="com/textiles/dao/TWarehouseProduct1Mapper.xml"/>
+      <mapper class="com.textiles.dao.TWarehouseProduct1Mapper2"/> 
+  </mappers>
+  
+ </configuration>
+ 
